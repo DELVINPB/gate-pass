@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h2 {
+    color: #333;
+}
+
+h3 {
+    color: #007bff; /* Blue for section headings */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: left;
+}
+
+th {
+    background-color: #333;
+    color: #fff;
+}
+
+.view-btn, .reject-btn, .approve-btn, button {
+    padding: 8px 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.reject-btn {
+    background-color: #ff6666;
+    color: #fff;
+}
+
+.approve-btn {
+    background-color: #66ff66;
+    color: #fff;
+}
+
+.view-btn {
+    background-color: #007bff;
+    color: #fff;
+}
+
+button:hover {
+    background-color: #555;
+    color: #fff;
+}
+
+textarea[name="reason"] {
+    margin-top: 10px;
+    width: calc(100% - 10px);
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #ff6666;
+    font-weight: bold;
+}
+
+/* Additional styles can be added based on your design */

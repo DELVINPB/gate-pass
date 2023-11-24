@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="adminstyles.css">
+    <!-- Include Firebase scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.5.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.5.0/firebase-database-compat.js"></script>
+
+    <script>
+        // Replace with your Firebase project configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDDqL4HpFB_IQ0OGSVCtrgkZD3EVHrFGOM",
+            authDomain: "gate-pass-6241a.firebaseapp.com",
+            databaseURL: "https://gate-pass-6241a-default-rtdb.firebaseio.com",
+            projectId: "gate-pass-6241a",
+            storageBucket: "gate-pass-6241a.appspot.com",
+            messagingSenderId: "995718317265",
+            appId: "1:995718317265:web:73006e1aea4a1408ed71f0"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Reference to the Firebase Realtime Database
+        const database = firebase.database();
+    </script>
+
+    <script>
+        function submitForm(collectionName, event) {
+    event.preventDefault();
+
+    // Get form data
+    var formData = new FormData(event.target);
+    var data = {};
+
+    // Append domain to user ID
+    formData.set("email", formData.get("id") + "@sahrdaya.ac.in");
+
+    formData.forEach(function (value, key) {
+        data[key] = value;
+    });
+
+    // Check if the data already exists
+    var collectionRef = database.ref(collectionName);
+    collectionRef.once("value", function (snapshot) {
+        var dataExists = false;
+
+        // Check for existing data
+        snapshot.forEach(function (childSnapshot) {
+            var existingData = childSnapshot.val();
+            var isDuplicate = Object.keys(data).every(key => existingData[key] === data[key]);
+
+            if (isDuplicate) {
+                dataExists = true;
+                showMessage("Data already exists!");
+                return true; // Terminate the loop
+            }
+        });
+
+        // If data doesn't exist, store it
+        if (!dataExists) {
+            database.ref(collectionName).push(data);
+
+            // Show success message
+            showMessage("Data inserted successfully!");
+        }
+
+        // Clear form fields
+        event.target.reset();
+    });
+}
+
+            
+        
+
+        function deleteData(collectionName, id) {
+            // Delete data from Firebase based on the specified ID
+            database.ref(collectionName).child(id).remove();
+
+            // Show success message
+            showMessage("Data deleted successfully!");
+
+            // Update displayed data after deletion
+            displayData(collectionName);
+        }
+
+        function showMessage(message) {
+            // Display a message to the admin
+            var messageElement = document.getElementById("message");
+            messageElement.innerHTML = message;
+
+            // Clear the message after 3 seconds
+            setTimeout(function () {
+                messageElement.innerHTML = "";
+            }, 3000);
+        }
+
+        function displayData(collectionName) {
+            // Reference to the specified collection
+            var collectionRef = database.ref(collectionName);
+
+            // Listen for changes in the data
+            collectionRef.on("value", function (snapshot) {
+                // Get the data from the snapshot
+                var data = snapshot.val();
+
+                // Display the data in the "dataDisplay" div
+                var tableElement = document.getElementById(collectionName + "Table");
+                tableElement.innerHTML = "<h4>" + collectionName + " Data:</h4>";
+
+                if (data) {
+                    // Create a table
+                    var table = "<table border='1'><tr>";
+
+                    // Add table headers
+                    Object.keys(data[Object.keys(data)[0]]).forEach(function (key) {
+                        table += "<th>" + key + "</th>";
+                    });
+
+                    table += "</tr>";
+
+                    // Add table rows
+                    Object.keys(data).forEach(function (id) {
+                        table += "<tr>";
+                        Object.values(data[id]).forEach(function (value) {
+                            table += "<td>" + value + "</td>";
+                        });
+                        // Add a delete button with the corresponding ID
+                        table += "<td><button onclick=\"deleteData('" + collectionName + "', '" + id + "')\">Delete</button></td>";
+                        table += "</tr>";
+                    });
+
+                    table += "</table>";
+
+                    // Append the table to the display element
+                    tableElement.innerHTML += table;
+                } else {
+                    tableElement.innerHTML += "<p>No data available.</p>";
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Admin Page</h2>
+
+        <!-- Message display area -->
+        <div id="message"></div>
+
+        <div class="section">
+            <h3>Student Details</h3>
+            <!-- Add form for student details -->
+            <form onsubmit="submitForm('students', event)">
+                <!-- Include relevant input fields for student details -->
+                <label for="studentName">Name:</label>
+                <input type="text" id="studentName" name="studentName" required>
+                <label for="id">ID:</label>
+                <input type="text" id="id" name="id" required>
+                <label for="password">Password:</label>
+                <input type="text" id="password" name="password" required>
+                <label for="studentdep">Department:</label>
+                <input type="text" id="studentdep" name="studentdep" required>
+                <label for="studentbatch">Batch:</label>
+                <input type="text" id="studentbatch" name="studentbatch" required>
+                <label for="studentgrdemail">Guardian Email:</label>
+                <input type="text" id="studentgrdemail" name="studentgrdemail" required>
+                <label for="studentgdrph">Guardian Phone:</label>
+                <input type="text" id="studentgdrph" name="studentgdrph" required>
+                <!-- Add role field for student -->
+                <label for="studentRole">Role:</label>
+                <select id="studentRole" name="role" required>
+                    <option value="student">Student</option>
+                </select>
+
+                <input type="submit" value="Add Student">
+            </form>
+        </div>
+
+        <div class="section">
+            <h3>Principle Details</h3>
+            <!-- Add form for principle details -->
+            <form onsubmit="submitForm('principles', event)">
+                <!-- Include relevant input fields for principle details -->
+                <label for="principleName">Name:</label>
+                <input type="text" id="principleName" name="principleName" required>
+                <label for="id">ID:</label>
+                <input type="text" id="id" name="id" required>
+                <label for="password">Password:</label>
+                <input type="text" id="password" name="password" required>
+                <!-- Add role field for principal -->
+                <label for="principalRole">Role:</label>
+                <select id="principalRole" name="role" required>
+                    <option value="principal">Principal</option>
+                </select>
+
+                <input type="submit" value="Add Principle">
+            </form>
+        </div>
+
+        <div class="section">
+            <h3>HOD Details</h3>
+            <!-- Add form for HOD details -->
+            <form onsubmit="submitForm('hod', event)">
+                <!-- Include relevant input fields for HOD details -->
+                <label for="hodName">Name:</label>
+                <input type="text" id="hodName" name="hodName" required>
+                <label for="hoddep">Department:</label>
+                <input type="text" id="hoddep" name="hoddep" required>
+                <label for="id">ID:</label>
+                <input type="text" id="id" name="id" required>
+                <label for="password">Password:</label>
+                <input type="text" id="password" name="password" required>
+                <!-- Add role field for HOD -->
+                <label for="hodRole">Role:</label>
+                <select id="hodRole" name="role" required>
+                    <option value="hod">HOD</option>
+                </select>
+
+                <input type="submit" value="Add HOD">
+            </form>
+        </div>
+
+        <div class="section">
+            <h3>Teacher Details</h3>
+            <!-- Add form for teacher details -->
+            <form onsubmit="submitForm('teachers', event)">
+                <!-- Include relevant input fields for teacher details -->
+                <label for="teacherName">Name:</label>
+                <input type="text" id="teacherName" name="teacherName" required>
+                <label for="teacherdep">Department:</label>
+                <input type="text" id="teacherdep" name="teacherdep" required>
+                <label for="id">ID:</label>
+                <input type="text" id="id" name="id" required>
+                <label for="password">Password:</label>
+                <input type="text" id="password" name="password" required>
+                <label for="teachercl">Assigned Class:</label>
+                <input type="text" id="teachercl" name="teachercl" required>
+                <!-- Add role field for teacher -->
+                <label for="teacherRole">Role:</label>
+                <select id="teacherRole" name="role" required>
+                    <option value="teacher">Teacher</option>
+                </select>
+
+                <input type="submit" value="Add Teacher">
+            </form>
+        </div>
+
+        <div class="section">
+            <h3>Security Details</h3>
+            <!-- Add form for security details -->
+            <form onsubmit="submitForm('security', event)">
+                <label for="Securityname">Name:</label>
+                <input type="text" id="Securityname" name="Securityname" required>
+                <label for="id">ID:</label>
+                <input type="text" id="id" name="id" required>
+                <label for="password">Password:</label>
+                <input type="text" id="password" name="password" required>
+                <!-- Add role field for security -->
+                <label for="securityRole">Role:</label>
+                <select id="securityRole" name="role" required>
+                    <option value="security">Security</option>
+                </select>
+
+                <input type="submit" value="Add Security">
+            </form>
+        </div>
+
+        <!-- Display stored data -->
+        <div id="dataDisplay">
+            <h3>Stored Data:</h3>
+            <div id="studentsTable"></div>
+            <div id="principlesTable"></div>
+            <div id="hodTable"></div>
+            <div id="teachersTable"></div>
+            <div id="securityTable"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            displayData('students');
+            displayData('principles');
+            displayData('hod');
+            displayData('teachers');
+            displayData('security');
+        });
+    </script>
+</body>
+</html>

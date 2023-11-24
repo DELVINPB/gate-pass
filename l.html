@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="loginstyles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .login-container {
+            width: 400px;
+            margin: 100px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .login-form {
+            text-align: center;
+        }
+
+        .login-form h2 {
+            margin-bottom: 20px;
+        }
+
+        .signup-link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <div class="logo-container">
+            <img src="college_logo.png" alt="College Logo" class="logo">
+        </div>
+        <div class="login-form">
+            <h2>Login Portal</h2>
+            <form id="loginForm">
+                <label for="userId">User ID:</label>
+                <input type="text" id="userId" name="userId" required><br>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required><br>
+
+                <input type="submit" value="Login">
+            </form>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.5.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.5.0/firebase-auth-compat.js"></script>
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDDqL4HpFB_IQ0OGSVCtrgkZD3EVHrFGOM",
+            authDomain: "gate-pass-6241a.firebaseapp.com",
+            databaseURL: "https://gate-pass-6241a-default-rtdb.firebaseio.com",
+            projectId: "gate-pass-6241a",
+            storageBucket: "gate-pass-6241a.appspot.com",
+            messagingSenderId: "995718317265",
+            appId: "1:995718317265:web:73006e1aea4a1408ed71f0"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        const loginForm = document.getElementById('loginForm');
+
+        loginForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const userId = document.getElementById('userId').value;
+            const password = document.getElementById('password').value;
+
+            const userEmail = `${userId}@sahrdaya.ac.in`;
+
+            // Use Firebase Authentication to sign in
+            firebase.auth().signInWithEmailAndPassword(userEmail, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+
+                    // Customize redirection based on your database schema
+                    // Example: window.location.href = 'student.html';
+                    switch (userRole) {
+                        case 'student':
+                            window.location.href = 'student.html';
+                            break;
+                        case 'hod':
+                            window.location.href = 'hod.html';
+                            break;
+                        case 'principal':
+                            window.location.href = 'principal.html';
+                            break;
+                        case 'teacher':
+                            window.location.href = 'teacher.html';
+                            break;
+                        case 'security':
+                            window.location.href = 'security.html';
+                            break;
+                        case 'admin':
+                            window.location.href = 'admin.html';
+                            break;
+                        default:
+                            alert('Invalid user role.');
+                    }
+                })
+                .catch((error) => {
+                    console.error(error.message);
+                    alert('Authentication failed. Please contact system admin.');
+                });
+        });
+    </script>
+
+</body>
+
+</html>

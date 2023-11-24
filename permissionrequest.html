@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permission Request Form</title>
+    <link rel="stylesheet" href="permissionstyles.css">
+    <script src="permissionscript.js" defer></script>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Permission Request Form</h2>
+        <form action="permission_handler.php" method="post" enctype="multipart/form-data">
+            <label for="eventName">Name of the Event:</label>
+            <input type="text" id="eventName" name="eventName" required>
+
+            <label for="eventType">Type of Event:</label>
+            <select id="eventType" name="eventType" required>
+                <option value="technical">Technical</option>
+                <option value="cultural">Cultural</option>
+                <option value="sports">Sports or Game</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="eventVenue">Venue:</label>
+            <input type="text" id="eventVenue" name="eventVenue" required>
+
+            <label for="eventDate">Date of the Event:</label>
+            <input type="date" id="eventDate" name="eventDate" required>
+
+            <label for="participantsNumber">Number of Participants:</label>
+            <input type="number" id="participantsNumber" name="participantsNumber" min="1" required>
+
+            <label for="participantsDetails">Details of Participants:</label>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>SR Number</th>
+                        <th>Branch</th>
+                        <th>Semester</th>
+                        <th>Signature (Upload)</th>
+                    </tr>
+                </thead>
+                <tbody id="participantsTableBody">
+                    <!-- Table rows will be added dynamically using JavaScript -->
+                </tbody>
+            </table>
+
+            <label for="teamLeaderName">Name of Team Leader:</label>
+            <input type="text" id="teamLeaderName" name="teamLeaderName" required>
+
+            <label for="teamLeaderContact">Contact Number of Team Leader:</label>
+            <input type="tel" id="teamLeaderContact" name="teamLeaderContact" pattern="[0-9]{10}" required>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <script src="script.js"></script> <!-- Include JavaScript for dynamic table row addition -->
+</body>
+</html>

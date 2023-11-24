@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principal Home Page</title>
+    <link rel="stylesheet" href="principalstyles.css">
+</head>
+<body>
+
+    <div class="container">
+        <h2>Welcome, Principal!</h2>
+
+        <h3>Leave/Permission Requests</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Department</th>
+                    <th>Request Type</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                    <th>Reason for Rejection</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Sample request row, you need to dynamically generate rows based on actual data -->
+                <tr>
+                    <td>123456</td>
+                    <td>John Doe</td>
+                    <td>Computer Science</td>
+                    <td>Leave Request</td>
+                    <td>Pending</td>
+                    <td>
+                        <button class="view-btn" onclick="handleAction('View', 1)">View</button>
+                        <button class="reject-btn" onclick="toggleReasonBox(1)">Reject</button>
+                        <button class="approve-btn" onclick="handleAction('Approve', 1)">Approve</button>
+                    </td>
+                    <td class="reason-box-1" style="display: none;">
+                        <label for="reason">Reason for Rejection:</label>
+                        <textarea id="reason-1" name="reason" rows="4" placeholder="Enter reason..."></textarea>
+                        <button onclick="submitRejection(1)">Submit</button>
+                    </td>
+                </tr>
+                <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+        <script src="principalscript.js"></script>
+    </div>
+
+</body>
+</html>

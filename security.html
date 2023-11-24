@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Home Page</title>
+    <link rel="stylesheet" href="securitystyles.css">
+</head>
+<body>
+
+    <div class="container">
+        <h2>Welcome, Security!</h2>
+
+        <label for="studentId">Enter Student ID or Scan ID Card:</label>
+        <input type="text" id="studentId" placeholder="Student ID">
+        <button onclick="checkPermission()">Check Permission</button>
+
+        <div id="result">
+            <!-- Permission result will be displayed here -->
+        </div>
+    </div>
+
+    <script src="securityscript.js"></script>
+</body>
+</html>
